@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,7 @@ Route::resource('/', MenuController::class);
 Auth::routes();
 
 Route::prefix('admin')->group(function () {
+    Route::resource('/checkout', CheckoutController::class);
     Route::resource('users', UserController::class);
     Route::resource('products', ProductController::class);
     Route::post('/get_product', [ProductController::class, 'get_product'])->name('get_product');

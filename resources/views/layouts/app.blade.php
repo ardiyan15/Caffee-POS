@@ -18,7 +18,6 @@
             height: 200px;
             object-fit: cover;
         }
-
     </style>
 </head>
 
@@ -44,25 +43,17 @@
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
                             @endif
-                            <li class="nav-item ml-3">
-                                <div class="row">
-                                    <a class="nav-link" href="{{ route('cart.index') }}">{{ __('Cart') }}
-                                        <small class="text-white text-center bg-warning"
-                                            style="width: 20px; height: 20px; display: inline-block; border-radius: 20px;"
-                                            id="cart_item"></small></a>
-                                </div>
-                            </li>
                         @else
                             <li class=" nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                                    {{ Auth::user()->username }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
-                                                                                                                                                                                                                                                                                                                                                          document.getElementById('logout-form').submit();">
+                                                                                                                                                                                                                                                                                                                                                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST"
@@ -72,6 +63,14 @@
                                 </div>
                             </li>
                         @endguest
+                        <li class="nav-item ml-3">
+                            <div class="row">
+                                <a class="nav-link" href="{{ route('cart.index') }}">{{ __('Cart') }}
+                                    <small class="text-white text-center bg-warning"
+                                        style="width: 20px; height: 20px; display: inline-block; border-radius: 20px;"
+                                        id="cart_item"></small></a>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -110,6 +109,107 @@
             rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
             return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
         }
+    </script>
+
+    <script>
+        let result = ''
+        let dataStored = JSON.parse(localStorage.getItem('order'))
+        if (dataStored == null) {
+            dataStored = []
+            $("#cart_item").hide()
+        }
+
+        if (dataStored != null) {
+            let totalItem = dataStored.reduce((accumulator, value) => {
+                return accumulator + value.qty
+            }, 0)
+
+            $("#cart_item").text(totalItem)
+        }
+
+        $('.order').on('click', function() {
+            let stockQty = $(this).data('qty');
+            let productTitle = $(this).data('title')
+            let productId = $(this).data('id')
+
+            $("#input_stock").val(stockQty)
+            $("#title-order").text(productTitle)
+            $("#product_id").val(productId)
+
+            $("#orderButton").on('click', function() {
+                let orderQty = $("#orderQty").val()
+                if (orderQty > stockQty) {
+                    Swal.fire(
+                        'Gagal',
+                        "Order melebihi stock",
+                        'error'
+                    )
+                } else {
+                    // result = dataStored.some(item => {
+                    //     return item
+                    // })
+
+                    // if (result == false) {
+                    //     dataStored.push({
+                    //         'productId': productId,
+                    //         'qty': orderQty
+                    //     })
+                    // } else if (result == true) {
+
+                    //     let index = dataStored.findIndex(data => {
+                    //         console.log(data.productId == productId)
+                    //         return data.productId === productId
+                    //     })
+                    //     console.log(dataStored[index].qty)
+                    // }
+                    dataStored.push({
+                        'productId': productId,
+                        'qty': +orderQty
+                    })
+                    localStorage.setItem('order', JSON.stringify(dataStored))
+                    Swal.fire(
+                        'Berhasil',
+                        'Product sudah masuk ke keranjang',
+                        'success'
+                    ).then(() => location.reload())
+                }
+            })
+        })
+
+
+        $(".detail").on('click', function() {
+            $(".modal-body").empty()
+
+            let id = $(this).data('id')
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('get_product') }}',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    id: id
+                },
+                success: (data) => {
+                    if (data.status == 200) {
+                        $(".modal-body").append(`
+                        <div class="col-md-12 mb-3 text-center">
+                            <div>
+                                <img style="width: 100%;" src="{!! asset('storage/products/${data.data.foto}') !!}"
+                                    alt="Card image cap">
+                                <div class="card-body">
+                                    <h5 class="card-title text-bold" style="font-weight: bolder">${data.data.name}</h5>
+                                    <p>${formatRupiah(+data.data.harga, 'Rp. ')}</p>
+                                    <p class="card-text">${data.data.deskripsi}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `)
+                    } else {
+                        console.log('Failed to get detail product')
+                    }
+                },
+                error: err => consle.log(err)
+            })
+        })
     </script>
 </body>
 

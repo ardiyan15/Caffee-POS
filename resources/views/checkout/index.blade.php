@@ -6,15 +6,35 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row" id="card-content">
-
+                        <div class="col-md-12">
+                            <hr style="width: 100%;">
+                        </div>
+                        <div class="col-sm-6 form-group mt-3">
+                            <h4 for="">Alamat</label>
+                                <textarea name="" id="" cols="30" rows="5" class="form-control" placeholder="Alamat antar"></textarea>
+                        </div>
+                        <div class="col-sm-6 mt-3">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4 for="">Total</h4>
+                                    <p id="total_price">Rp. 30.000</p>
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="" class="font-weight-bold">Method Pembayaran</label>
+                                    <select name="payment_method" class="form-control">
+                                        <option value="">-- Pilih Method Pembayaran</option>
+                                        <option value="Dana">Dana</option>
+                                        <option value="Cash">Cash</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="mt-3 col-md-12">
                         @guest
-                            <a href="{{ route('checkout.index') }}" style="width: 100%" disabled
-                                class="text-white btn btn-primary btn-sm">Checkout</a>
+                            <a href="#" style="width: 100%" disabled class="text-white btn btn-primary btn-sm">Buat Pesanan</a>
                         @else
-                            <a href="{{ route('checkout.index') }}" style="width: 100%;"
-                                class="text-white btn btn-primary btn-sm">Checkout</a>
+                            <a style="width: 100%;" class="text-white btn btn-primary btn-sm">Buat Pesanan</a>
                         @endguest
                     </div>
                 </div>
@@ -73,6 +93,8 @@
     <script>
         let dataStored = JSON.parse(localStorage.getItem('order'))
 
+        let totalPrice = [];
+
         function sumObj(objArr) {
             // an object to store the `created` and `amount` as key=>value
             var newObj = {};
@@ -124,7 +146,9 @@
                                     item.qty = data.qty
                                 }
                             });
-                            $("#card-content").append(`
+                            let result = item.qty * item.harga
+                            totalPrice.push(result)
+                            $("#card-content").prepend(`
                                 <div class="col-md-6 mt-4">
                                     <img class="card-img-top" src='{{ asset('storage/products/1654159660.jpg') }}'>
                                 </div>
@@ -135,6 +159,8 @@
                                 </div>
                             `)
                         })
+                        let finalPrice = totalPrice.reduce((accumulator, value) => accumulator + value)
+                        $("#total_price").text("Rp. " + formatRupiah(finalPrice))
                     } else {
                         Swal.fire(
                             'Gagal',
