@@ -11,7 +11,8 @@
                         </div>
                         <div class="col-sm-6 form-group mt-3">
                             <h4 for="">Alamat</label>
-                                <textarea name="" id="" cols="30" rows="5" class="form-control" placeholder="Alamat antar"></textarea>
+                                <textarea required name="" id="alamat" cols="30" rows="5" class="form-control"
+                                    placeholder="Alamat antar"></textarea>
                         </div>
                         <div class="col-sm-6 mt-3">
                             <div class="row">
@@ -21,7 +22,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <label for="" class="font-weight-bold">Method Pembayaran</label>
-                                    <select name="payment_method" class="form-control">
+                                    <select id="payment_method" name="payment_method" class="form-control" required>
                                         <option value="">-- Pilih Method Pembayaran</option>
                                         <option value="Dana">Dana</option>
                                         <option value="Cash">Cash</option>
@@ -31,11 +32,8 @@
                         </div>
                     </div>
                     <div class="mt-3 col-md-12">
-                        @guest
-                            <a href="#" style="width: 100%" disabled class="text-white btn btn-primary btn-sm">Buat Pesanan</a>
-                        @else
-                            <a style="width: 100%;" class="text-white btn btn-primary btn-sm">Buat Pesanan</a>
-                        @endguest
+                        <button style="width: 100%;" id="order" class="text-white btn btn-primary btn-sm">Buat
+                            Pesanan</button>
                     </div>
                 </div>
             </div>
@@ -91,7 +89,9 @@
 
 @push('scripts')
     <script>
-        let dataStored = JSON.parse(localStorage.getItem('order'))
+        dataStored = JSON.parse(localStorage.getItem('order'))
+        let address = ''
+        let payment_method = ''
 
         let totalPrice = [];
 
@@ -140,12 +140,15 @@
                 },
                 success: response => {
                     if (response.status == 200) {
+                        let i = 0;
                         response.data.forEach(item => {
                             groupAndSumData.forEach(data => {
                                 if (item.id == data.productId) {
                                     item.qty = data.qty
                                 }
                             });
+                            dataStored[i].price = item.harga * item.qty
+                            i++
                             let result = item.qty * item.harga
                             totalPrice.push(result)
                             $("#card-content").prepend(`
@@ -179,5 +182,53 @@
 
             $("#cart_item").text(totalItem)
         }
+
+        $("#payment_method").on('change', function() {
+            payment_method = $(this).val()
+        })
+
+        $("#order").on('click', function() {
+            if ($("#alamat").val() == '') {
+                Swal.fire(
+                    'Gagal',
+                    'Alamat harus diisi',
+                    'error'
+                )
+                return false
+            } else if (payment_method == '') {
+                Swal.fire(
+                    'Gagal',
+                    'Metode pmebayaran harus diisi',
+                    'error'
+                )
+                return false
+            } else {
+                address = $("#alamat").val()
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('transaction.store') }}',
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        address: address,
+                        payment_method: payment_method,
+                        dataStored
+                    },
+                    success: response => {
+                        if (response.status == 200) {
+                            Swal.fire(
+                                'Berhasil',
+                                'Berhasil memnbuat pesanan',
+                                'success'
+                            ).then(() => {
+                                localStorage.clear()
+                                var APP_URL = {!! json_encode(url('/')) !!}
+                                window.location = APP_URL + '/order'
+                            })
+                        }
+                    },
+                    error: err => console.log(err)
+                })
+            }
+        })
     </script>
 @endpush

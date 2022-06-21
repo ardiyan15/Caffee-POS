@@ -33,10 +33,9 @@
             color: white !important;
         } */
 
-        .btn-primary {
+        /* .btn-primary {
             background-color: #013066 !important;
-        }
-
+        } */
     </style>
 </head>
 

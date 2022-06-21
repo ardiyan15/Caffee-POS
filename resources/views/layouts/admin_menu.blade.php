@@ -8,11 +8,29 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <a href="{{ route('home') }}"
+                    <a href="{{ route('dashboard') }}"
                         class="nav-link @if ($menu == 'Dashboard') custom-active @else custom-color @endif"><i
                             class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('backoffice_report.index') }}"
+                        class="nav-link @if ($menu == 'Dashboard') custom-active @else custom-color @endif"><i
+                            class="nav-icon fas fa-file"></i>
+                        <p>
+                            Report
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('backoffice_order.index') }}"
+                        class="nav-link @if ($menu == 'Dashboard') custom-active @else custom-color @endif"><i
+                            class="nav-icon fas fa-exchange-alt"></i>
+                        <p>
+                            Pesanan
                         </p>
                     </a>
                 </li>
@@ -28,7 +46,7 @@
                 </li>
 
 
-                <li class="nav-item @if ($menu == 'mks') menu-open @endif">
+                {{-- <li class="nav-item @if ($menu == 'mks') menu-open @endif">
                     <a href="#"
                         class="@if ($menu == 'mks') custom-active @else custom-color @endif nav-link">
                         <i class="nav-icon fa fa-list-alt"></i>
@@ -47,9 +65,9 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
 
-                <li class="nav-item @if ($menu == 'approval') menu-open @endif">
+                {{-- <li class="nav-item @if ($menu == 'approval') menu-open @endif">
                     <a href="#"
                         class="@if ($menu == 'approval') custom-active @else custom-color @endif nav-link">
                         <i class="nav-icon fa fa-check"></i>
@@ -67,7 +85,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
 
                 <li class="nav-item @if ($menu == 'master') menu-open @endif">
                     <a href="#"
@@ -81,17 +99,17 @@
                     <ul class="nav nav-treeview">
 
                         <li class="nav-item">
-                            <a href=""
+                            <a href="{{ route('products.index') }}"
                                 class="@if ($sub_menu == 'credit') active @else custom-color @endif nav-link ">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Pengajuan Kredit</p>
+                                <p>Produk</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href=""
+                            <a href="{{ route('users.index') }}"
                                 class="@if ($sub_menu == 'suku_bunga') active @else custom-color @endif nav-link ">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Suku Bunga</p>
+                                <p>User</p>
                             </a>
                         </li>
                     </ul>

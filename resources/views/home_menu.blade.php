@@ -6,8 +6,7 @@
             <div class="row text-center" style="margin-left: 5%;">
                 <div class="col-md-4 mb-3">
                     <div class="card h-100 shadow" style="width: 18rem;">
-                        <img class="card-img-top" src='{{ asset("storage/products/$product->foto") }}'
-                            alt="Card image cap">
+                        <img class="card-img-top" src='{{ asset("storage/products/$product->foto") }}' alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title text-bold" style="font-weight: bolder">{{ $product->name }}</h5>
                             <p>@currency($product->harga)</p>
@@ -82,8 +81,9 @@
 
 @push('scripts')
     <script>
-        let result = ''
-        let dataStored = JSON.parse(localStorage.getItem('order'))
+        // localStorage.clear()
+        dataStored = JSON.parse(localStorage.getItem('order'))
+        console.log(dataStored)
         if (dataStored == null) {
             dataStored = []
             $("#cart_item").hide()
@@ -108,6 +108,7 @@
 
             $("#orderButton").on('click', function() {
                 let orderQty = $("#orderQty").val()
+                console.log(orderQty)
                 if (orderQty > stockQty) {
                     Swal.fire(
                         'Gagal',
@@ -136,6 +137,7 @@
                         'productId': productId,
                         'qty': +orderQty
                     })
+                    console.log(dataStored)
                     localStorage.setItem('order', JSON.stringify(dataStored))
                     Swal.fire(
                         'Berhasil',

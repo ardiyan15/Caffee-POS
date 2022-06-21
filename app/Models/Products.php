@@ -11,4 +11,11 @@ class Products extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = [];
+
+    protected $table = 'products';
+
+    public function transaction_details()
+    {
+        return $this->hasMany(Transaction_details::class, 'product_id');
+    }
 }

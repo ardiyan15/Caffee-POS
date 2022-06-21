@@ -6,15 +6,14 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row" id="card-content">
-
                     </div>
-                    <div class="mt-3 col-md-12">
+                    <div class="mt-3 col-md-12 text-center">
                         @guest
-                            <a href="{{ route('checkout.index') }}" style="width: 100%" disabled
-                                class="text-white btn btn-primary btn-sm">Checkout</a>
+                            <button style="width: 100%" disabled class="text-white btn btn-success btn-sm">Checkout</button>
+                            <small class="font-weight-bold">( Login untuk checkout )</small>
                         @else
-                            <a href="{{ route('checkout.index') }}" style="width: 100%;"
-                                class="text-white btn btn-primary btn-sm">Checkout</a>
+                            <a href="{{ route('checkout.index') }}" style="width: 100%;" disabled
+                                class="text-white btn btn-success btn-sm">Checkout</a>
                         @endguest
                     </div>
                 </div>

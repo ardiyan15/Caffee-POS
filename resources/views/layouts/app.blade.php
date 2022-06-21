@@ -23,7 +23,7 @@
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -56,11 +56,13 @@
                                                                                                                                                                                                                                                                                                                                                                                       document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                        class="d-none">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
                                 </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('order.index') }}">{{ __('Pesanan') }}</a>
                             </li>
                         @endguest
                         <li class="nav-item ml-3">
@@ -127,54 +129,54 @@
             $("#cart_item").text(totalItem)
         }
 
-        $('.order').on('click', function() {
-            let stockQty = $(this).data('qty');
-            let productTitle = $(this).data('title')
-            let productId = $(this).data('id')
+        // $('.order').on('click', function() {
+        //     let stockQty = $(this).data('qty');
+        //     let productTitle = $(this).data('title')
+        //     let productId = $(this).data('id')
 
-            $("#input_stock").val(stockQty)
-            $("#title-order").text(productTitle)
-            $("#product_id").val(productId)
+        //     $("#input_stock").val(stockQty)
+        //     $("#title-order").text(productTitle)
+        //     $("#product_id").val(productId)
 
-            $("#orderButton").on('click', function() {
-                let orderQty = $("#orderQty").val()
-                if (orderQty > stockQty) {
-                    Swal.fire(
-                        'Gagal',
-                        "Order melebihi stock",
-                        'error'
-                    )
-                } else {
-                    // result = dataStored.some(item => {
-                    //     return item
-                    // })
+        //     $("#orderButton").on('click', function() {
+        //         let orderQty = $("#orderQty").val()
+        //         if (orderQty > stockQty) {
+        //             Swal.fire(
+        //                 'Gagal',
+        //                 "Order melebihi stock",
+        //                 'error'
+        //             )
+        // } else {
+        // result = dataStored.some(item => {
+        //     return item
+        // })
 
-                    // if (result == false) {
-                    //     dataStored.push({
-                    //         'productId': productId,
-                    //         'qty': orderQty
-                    //     })
-                    // } else if (result == true) {
+        // if (result == false) {
+        //     dataStored.push({
+        //         'productId': productId,
+        //         'qty': orderQty
+        //     })
+        // } else if (result == true) {
 
-                    //     let index = dataStored.findIndex(data => {
-                    //         console.log(data.productId == productId)
-                    //         return data.productId === productId
-                    //     })
-                    //     console.log(dataStored[index].qty)
-                    // }
-                    dataStored.push({
-                        'productId': productId,
-                        'qty': +orderQty
-                    })
-                    localStorage.setItem('order', JSON.stringify(dataStored))
-                    Swal.fire(
-                        'Berhasil',
-                        'Product sudah masuk ke keranjang',
-                        'success'
-                    ).then(() => location.reload())
-                }
-            })
-        })
+        //     let index = dataStored.findIndex(data => {
+        //         console.log(data.productId == productId)
+        //         return data.productId === productId
+        //     })
+        //     console.log(dataStored[index].qty)
+        // }
+        //             dataStored.push({
+        //                 'productId': productId,
+        //                 'qty': +orderQty
+        //             })
+        //             localStorage.setItem('order', JSON.stringify(dataStored))
+        //             Swal.fire(
+        //                 'Berhasil',
+        //                 'Product sudah masuk ke keranjang',
+        //                 'success'
+        //             ).then(() => location.reload())
+        //         }
+        //     })
+        // })
 
 
         $(".detail").on('click', function() {

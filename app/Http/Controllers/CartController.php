@@ -69,7 +69,7 @@ class CartController extends Controller
 
     public function get_product_in_cart(Request $request)
     {
-        $products = Products::whereIn('id', $request->dataIds)->get();
+        $products = Products::whereIn('id', $request->dataIds)->orderBy('id', 'DESC')->get();
 
         if (count($products) > 0) {
             return response()->json([
