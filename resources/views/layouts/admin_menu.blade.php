@@ -36,7 +36,7 @@
                 </li>
                 <li class="nav-item">
 
-                    <a href=""
+                    <a href="{{ route('profile.index') }}"
                         class="nav-link @if ($menu == 'users') custom-active @else custom-color @endif"><i
                             class="nav-icon fa fa-user"></i>
                         <p>

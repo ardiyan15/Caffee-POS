@@ -11,6 +11,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\backoffice_order;
 use App\Http\Controllers\backoffice_report;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 
 Route::resource('/', MenuController::class);
 
@@ -20,6 +21,7 @@ Route::group([
     'middleware' => ['auth'],
     'prefix' => 'admin'
 ], function () {
+    Route::resource('/profile', ProfileController::class);
     Route::resource('/backoffice_report', backoffice_report::class);
     Route::resource('/backoffice_order', backoffice_order::class);
     Route::resource('/transaction', TransactionController::class);
@@ -39,5 +41,3 @@ Route::patch('/finish_order_customer/{id}', [TransactionController::class, 'fini
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
-
-// Route::get('/',);
