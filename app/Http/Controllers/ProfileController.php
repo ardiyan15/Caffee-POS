@@ -13,7 +13,7 @@ class ProfileController extends Controller
     public function index()
     {
         $data = [
-            'menu' => '',
+            'menu' => 'profile',
             'sub_menu' => '',
             'user' => User::findOrFail(Auth::user()->id)
         ];
@@ -46,7 +46,7 @@ class ProfileController extends Controller
         ];
 
         $data = [
-            'menu' => '',
+            'menu' => 'profile',
             'sub_menu' => '',
             'user' => User::findOrFail($id),
             'roles' => $roles

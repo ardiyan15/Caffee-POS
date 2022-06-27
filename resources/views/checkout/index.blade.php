@@ -39,59 +39,16 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="modalDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="orderModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Order Product</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <h5 id="title-order">Test Product 2</h5>
-                        <div class="col-sm-6 form-group">
-                            <label for="">Tersisa</label>
-                            <input type="text" class="form-control" readonly id="input_stock">
-                        </div>
-                        <div class="col-sm-6 form-group">
-                            <label for="">Qty</label>
-                            <input type="text" class="form-control" id="orderQty" placeholder="Qty">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="orderButton" class="btn btn-primary btn-sm">Simpan</button>
-                    <button type="button" class="btn btn-secondary btn-sm">Batal</button>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 
 @push('scripts')
+    {{-- <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"> --}}
+    </script>
     <script>
         dataStored = JSON.parse(localStorage.getItem('order'))
         let address = ''
         let payment_method = ''
+        let snapToken = ''
 
         let totalPrice = [];
 
@@ -164,6 +121,64 @@
                         })
                         let finalPrice = totalPrice.reduce((accumulator, value) => accumulator + value)
                         $("#total_price").text("Rp. " + formatRupiah(finalPrice))
+                        snapToken = response.snapToken
+
+                        // $("#order").on('click', function() {
+                        // console.log(snapToken)
+                        // snap.pay(snapToken, {
+                        //     onSuccess: function(result) {
+                        //         console.log(result)
+                        //     },
+                        //     onPending: function(result) {
+                        //         console.log(result)
+                        //     },
+                        //     onError: function(result) {
+                        //         console.log(result)
+                        //     }
+                        // })
+                        //     if ($("#alamat").val() == '') {
+                        //         Swal.fire(
+                        //             'Gagal',
+                        //             'Alamat harus diisi',
+                        //             'error'
+                        //         )
+                        //         return false
+                        //     } else if (payment_method == '') {
+                        //         Swal.fire(
+                        //             'Gagal',
+                        //             'Metode pmebayaran harus diisi',
+                        //             'error'
+                        //         )
+                        //         return false
+                        //     } else {
+                        //         address = $("#alamat").val()
+                        //         $.ajax({
+                        //             type: 'POST',
+                        //             url: '{{ route('transaction.store') }}',
+                        //             data: {
+                        //                 "_token": "{{ csrf_token() }}",
+                        //                 address: address,
+                        //                 payment_method: payment_method,
+                        //                 dataStored
+                        //             },
+                        //             success: response => {
+                        //                 if (response.status == 200) {
+                        //                     Swal.fire(
+                        //                         'Berhasil',
+                        //                         'Berhasil memnbuat pesanan',
+                        //                         'success'
+                        //                     ).then(() => {
+                        //                         localStorage.clear()
+                        //                         var APP_URL =
+                        //                             {!! json_encode(url('/')) !!}
+                        //                         window.location = APP_URL + '/order'
+                        //                     })
+                        //                 }
+                        //             },
+                        //             error: err => console.log(err)
+                        //         })
+                        //     }
+                        // })
                     } else {
                         Swal.fire(
                             'Gagal',

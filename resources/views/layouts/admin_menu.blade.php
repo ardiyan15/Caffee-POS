@@ -9,7 +9,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
                     <a href="{{ route('dashboard') }}"
-                        class="nav-link @if ($menu == 'Dashboard') custom-active @else custom-color @endif"><i
+                        class="nav-link @if ($menu == 'Dashboard') active @endif"><i
                             class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
@@ -18,7 +18,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('backoffice_report.index') }}"
-                        class="nav-link @if ($menu == 'Dashboard') custom-active @else custom-color @endif"><i
+                        class="nav-link @if ($menu == 'Report') active @endif"><i
                             class="nav-icon fas fa-file"></i>
                         <p>
                             Report
@@ -27,7 +27,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('backoffice_order.index') }}"
-                        class="nav-link @if ($menu == 'Dashboard') custom-active @else custom-color @endif"><i
+                        class="nav-link @if ($menu == 'Order') active @endif"><i
                             class="nav-icon fas fa-exchange-alt"></i>
                         <p>
                             Pesanan
@@ -35,9 +35,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-
                     <a href="{{ route('profile.index') }}"
-                        class="nav-link @if ($menu == 'users') custom-active @else custom-color @endif"><i
+                        class="nav-link @if ($menu == 'profile') active @endif"><i
                             class="nav-icon fa fa-user"></i>
                         <p>
                             User Profile
@@ -88,8 +87,7 @@
                 </li> --}}
 
                 <li class="nav-item @if ($menu == 'master') menu-open @endif">
-                    <a href="#"
-                        class="@if ($menu == 'master') custom-active @else custom-color @endif nav-link">
+                    <a href="#" class="@if ($menu == 'master') active @endif nav-link">
                         <i class="nav-icon fa fa-database"></i>
                         <p>
                             Data Master
@@ -100,14 +98,14 @@
 
                         <li class="nav-item">
                             <a href="{{ route('products.index') }}"
-                                class="@if ($sub_menu == 'credit') active @else custom-color @endif nav-link ">
+                                class="@if ($sub_menu == 'produk') active @endif nav-link ">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Produk</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('users.index') }}"
-                                class="@if ($sub_menu == 'suku_bunga') active @else custom-color @endif nav-link ">
+                                class="@if ($sub_menu == 'user') active @endif nav-link ">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>User</p>
                             </a>

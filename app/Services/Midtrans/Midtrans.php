@@ -24,7 +24,7 @@ class Midtrans
     public function _configureMidtrans()
     {
         Config::$serverKey = $this->serverKey;
-        Conifg::$isProduction = $this->isProduction;
+        Config::$isProduction = $this->isProduction;
         Config::$isSanitized = $this->isSanitized;
         Config::$is3ds = $this->is3ds;
     }

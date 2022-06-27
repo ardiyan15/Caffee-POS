@@ -50,6 +50,17 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="small-box bg-success">
+                            <div class="inner">
+                                <h3>@currency($amount_transaction->total_transaction)</h3>
+                                <p>Jumlah Transaksi Hari Ini</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-database"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

@@ -2,16 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaction;
+use App\Services\Midtrans\CreateSnapTokenService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class OrderContrller extends Controller
 {
     public function index()
     {
-        $user_id = Auth::user()->id;
-        $results = DB::select("SELECT transactions.*, transactions.id AS transaction_id, transaction_details.id AS detail_id , products.*, transaction_details.* FROM transactions JOIN transaction_details ON transactions.id = transaction_details.transaction_id JOIN products ON products.id = transaction_details.product_id WHERE transactions.created_by = $user_id AND transactions.is_finish = 0 OR transactions.is_finish = 1 ORDER BY transactions.id DESC");
+        $results = Transaction::with(['transaction_details' => function ($transaction) {
+            $transaction->with('products');
+        }])->withSum('transaction_details', 'total_price')->where([
+            ['created_by', '=', Auth::user()->id],
+            ['is_finish', '=', 0]
+        ])->orWhere([
+            ['created_by', '=', Auth::user()->id],
+            ['is_finish', '=', 1]
+        ])->orderBy('id', 'DESC')->get();
+
+        foreach ($results as $result) {
+            if ($result->snap_token == null) {
+                $midtrans = new CreateSnapTokenService($result);
+                $snap_token = $midtrans->getSnapToken();
+                $result->snap_token = $snap_token;
+                $result->save();
+            }
+        }
 
         $data = [
             'orders' => $results

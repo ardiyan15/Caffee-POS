@@ -2,28 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Products;
 use App\Models\Transaction;
+use App\Models\Transaction_details;
 use App\Models\User;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
         $products = Products::orderBy('id', 'DESC')->get();
@@ -41,13 +33,17 @@ class HomeController extends Controller
         $users = count(User::where([['roles', '!=', 'customer']])->get());
         $customers = count(User::where([['roles', '=', 'customer']])->get());
         $transactions = count(Transaction::where([['is_finish', '=', 2]])->get());
+
+        $amount_transaction = DB::select("SELECT SUM(transaction_details.total_price) AS 'total_transaction' FROM transactions JOIN transaction_details ON transaction_details.transaction_id = transactions.id WHERE DATE(transactions.created_at) = CURDATE() GROUP BY DATE(transactions.created_at)")[0];
+
         $data = [
             'products' => $products,
             'users' => $users,
             'customers' => $customers,
             'transactions' => $transactions,
-            'menu' => '',
-            'sub_menu' => ''
+            'menu' => 'Dashboard',
+            'sub_menu' => '',
+            'amount_transaction' => $amount_transaction
         ];
 
         return view('dashboard')->with($data);

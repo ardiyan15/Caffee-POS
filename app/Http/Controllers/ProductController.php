@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    protected $menu = 'products';
+    protected $menu = 'master';
 
     public function index()
     {
         $products = Products::orderBy('id', 'DESC')->get();
         $data = [
             'menu' => $this->menu,
-            'sub_menu' => 'test',
+            'sub_menu' => 'produk',
             'products' => $products
         ];
 
@@ -27,7 +27,7 @@ class ProductController extends Controller
     {
         $data = [
             'menu' => $this->menu,
-            'sub_menu' => 'test'
+            'sub_menu' => 'produk'
         ];
 
         return view('products.create')->with($data);
@@ -73,7 +73,7 @@ class ProductController extends Controller
 
         $data = [
             'menu' => $this->menu,
-            'sub_menu' => 'test',
+            'sub_menu' => 'produk',
             'product' => $product
         ];
 

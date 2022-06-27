@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Transaction;
 use App\Models\Transaction_details;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
+use App\Services\Midtrans\CreateSnapTokenService;
 
 class TransactionController extends Controller
 {
@@ -23,10 +25,21 @@ class TransactionController extends Controller
 
     public function store(Request $request)
     {
+        $transaction = Transaction::withTrashed()->pluck('nomor_transaksi')->last();
+
+        $now = Carbon::now();
+        $month_and_year = $now->format('md');
+        if (!$transaction) {
+            $transaction = "TRX" . $month_and_year . sprintf('%05d', 1);
+        } else {
+            $last_number = (int)substr($transaction, 9);
+            $transaction = "TRX" . $month_and_year . sprintf('%05d', $last_number + 1);
+        }
+
         DB::beginTransaction();
         try {
             Transaction::create([
-                'nomor_transaksi' => '001',
+                'nomor_transaksi' => $transaction,
                 'alamat' => $request->address,
                 'payment_method' => $request->payment_method,
                 'status_order' => 'pending',
@@ -48,7 +61,7 @@ class TransactionController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => 'success',
-                'data' => $request->address
+                'data' => $last_number
             ]);
         } catch (\Throwable $err) {
             DB::rollBack();
@@ -60,9 +73,9 @@ class TransactionController extends Controller
         }
     }
 
-    public function show($id)
+    public function show(Transaction $transaction)
     {
-        //
+        // 
     }
 
     public function edit($id)
@@ -111,7 +124,7 @@ class TransactionController extends Controller
         }
     }
 
-    public function finish_order_customer($id)
+    public function finish_order_customer(Request $request, $id)
     {
         DB::beginTransaction();
         try {
@@ -139,5 +152,44 @@ class TransactionController extends Controller
             throw $err;
             return back()->with('error', 'Gagal menyelesaikan pesanan');
         }
+    }
+
+    public function cancel_order($id)
+    {
+        DB::beginTransaction();
+        try {
+            $transaction = Transaction::findOrFail($id);
+            $transaction->is_finish = 3;
+            $transaction->status_order = 'pesanan dibatalkan oleh customer';
+            $transaction->save();
+            DB::commit();
+            return back()->with('success', 'Sukses cancel pesanan');
+        } catch (\Throwable $err) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal cancel pesanan');
+        }
+    }
+
+    public function history_transaction()
+    {
+        // $user_id = Auth::user()->id;
+
+        // $results = DB::select("SELECT transactions.*, transactions.id AS transaction_id, transaction_details.id AS detail_id , products.*, transaction_details.* FROM transactions JOIN transaction_details ON transactions.id = transaction_details.transaction_id JOIN products ON products.id = transaction_details.product_id WHERE transactions.created_by = $user_id AND transactions.is_finish = 2 AND transactions.deleted_at IS NULL ORDER BY transactions.id DESC");
+
+        // dd($results);
+
+        $results = Transaction::with(['transaction_details' => function ($transaction) {
+            $transaction->with('products');
+        }])->withSum('transaction_details', 'total_price')->where([
+            ['created_by', '=', Auth::user()->id],
+            ['is_finish', '!=', 0],
+            ['is_finish', '!=', 1]
+        ])->orderBy('id', 'DESC')->get();
+
+        $data = [
+            'orders' =>  $results
+        ];
+
+        return view('transaction.history')->with($data);
     }
 }

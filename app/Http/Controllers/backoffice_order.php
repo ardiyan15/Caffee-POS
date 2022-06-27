@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class backoffice_order extends Controller
 {
-    protected $menu = '';
+    protected $menu = 'Order';
     public function index()
     {
         if (Auth::user()->roles == 'driver') {
@@ -46,7 +46,7 @@ class backoffice_order extends Controller
         }])->withSum('transaction_details', 'total_price')->findOrFail($id);
 
         $data = [
-            'menu' => '',
+            'menu' => $this->menu,
             'sub_menu' => '',
             'transaction' => $transaction
         ];

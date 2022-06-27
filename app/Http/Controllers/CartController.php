@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Products;
+use App\Services\Midtrans\CreateSnapTokenService;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -57,7 +58,7 @@ class CartController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => 'success',
-                'data' => $products
+                'data' => $products,
             ]);
         } else {
             return response()->json([

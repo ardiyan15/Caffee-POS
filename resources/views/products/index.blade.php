@@ -23,15 +23,15 @@
                             <div class="card-body">
                                 <table id="table" class="table table-bordered table-striped">
                                     <thead>
-                                        <tr style="background-color: #013066">
-                                            <th class="text-center text-white">#</th>
-                                            <th class="text-center text-white">Nama</th>
-                                            <th class="text-center text-white">Harga</th>
-                                            <th class="text-center text-white">Tipe</th>
-                                            <th class="text-center text-white">Deskripsi</th>
-                                            <th class="text-center text-white">Foto</th>
-                                            <th class="text-center text-white">Qty</th>
-                                            <th class="text-center text-white">Opsi</th>
+                                        <tr>
+                                            <th class="text-center">#</th>
+                                            <th class="text-center">Nama</th>
+                                            <th class="text-center">Harga</th>
+                                            <th class="text-center">Tipe</th>
+                                            <th class="text-center">Deskripsi</th>
+                                            <th class="text-center">Foto</th>
+                                            <th class="text-center">Qty</th>
+                                            <th class="text-center">Opsi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -46,8 +46,10 @@
                                                     <a href="" class="product" data-toggle="modal"
                                                         data-target="#exampleModal" data-id="{{ $product->id }}">
                                                         <img class="text-center"
-                                                            src='{{ asset("/storage/products/$product->foto") }}' width="
-                                                                                        50" height="50" />
+                                                            src='{{ asset("/storage/products/$product->foto") }}'
+                                                            width="
+                                                                                        50"
+                                                            height="50" />
                                                     </a>
                                                 </td>
                                                 <td class="text-center">{{ $product->qty }}</td>
@@ -60,8 +62,8 @@
                                                             class="btn btn-sm btn-info rounded"><i class="fas fa-edit"
                                                                 title="Edit"></i></a>
                                                         <button class="delete-confirm btn btn-sm btn-danger rounded"><i
-                                                                class="fa fa-trash" aria-hidden="true"
-                                                                data-toggle="tooltip" title="Hapus"></i></button>
+                                                                class="fa fa-trash" aria-hidden="true" data-toggle="tooltip"
+                                                                title="Hapus"></i></button>
                                                     </form>
                                                 </td>
                                             </tr>

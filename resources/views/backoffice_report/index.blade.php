@@ -17,6 +17,21 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
+                                <form action="{{ route('backoffice_report.index') }}" method="GET" class="mb-3">
+                                    <div class="row">
+                                        <div class="col-md-6 form-group">
+                                            <label for="">Tanggal Awal</label>
+                                            <input type="date" name="start" class="form-control">
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <label for="">Tanggal Akhir</label>
+                                            <input type="date" name="end" class="form-control">
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                                    <a href="{{ route('backoffice_report.index') }}"
+                                        class="btn btn-danger btn-sm">Reset</a>
+                                </form>
                                 <table id="table" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
@@ -49,24 +64,3 @@
         </section>
     </div>
 @endsection
-
-@push('scripts')
-    <script>
-        $('.delete-confirm').on('click', function(event) {
-            event.preventDefault();
-            Swal.fire({
-                title: 'Hapus Data',
-                text: 'Ingin menghapus data?',
-                icon: 'question',
-                showCloseButton: true,
-                showCancelButton: true,
-                cancelButtonText: "Batal",
-                focusConfirm: false,
-            }).then((value) => {
-                if (value.isConfirmed) {
-                    $(this).closest("form").submit()
-                }
-            });
-        });
-    </script>
-@endpush

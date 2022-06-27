@@ -9,13 +9,13 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    protected $menu = '';
+    protected $menu = 'master';
 
     public function index()
     {
         $data = [
             'menu' => $this->menu,
-            'sub_menu' => 'test',
+            'sub_menu' => 'user',
             'users' => User::orderBy('id', 'DESC')->get()
         ];
 
@@ -26,7 +26,7 @@ class UserController extends Controller
     {
         $data = [
             'menu' => $this->menu,
-            'sub_menu' => 'test'
+            'sub_menu' => 'user'
         ];
 
         return view('users.create')->with($data);
@@ -81,7 +81,7 @@ class UserController extends Controller
 
         $data = [
             'menu' => $this->menu,
-            'sub_menu' => 'test',
+            'sub_menu' => 'user',
             'user' => User::findOrFail($id),
             'roles' => $roles
         ];
@@ -127,6 +127,36 @@ class UserController extends Controller
         } catch (\Throwable $err) {
             DB::rollBack();
             return back()->with('error', 'Gagal menghapus user');
+        }
+    }
+
+    public function activation($id)
+    {
+        DB::beginTransaction();
+        try {
+            $user = User::findOrFail($id);
+            $user->is_active = 1;
+            $user->save();
+            DB::commit();
+            return back()->with('success', 'Berhasil Aktivasi User');
+        } catch (\Throwable $err) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal Aktivasi User');
+        }
+    }
+
+    public function deactivation($id)
+    {
+        DB::beginTransaction();
+        try {
+            $user = User::findOrFail($id);
+            $user->is_active = 0;
+            $user->save();
+            DB::commit();
+            return back()->with('success', 'Berhasil Deaktivasi User');
+        } catch (\Throwable $err) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal Deaktivasi User');
         }
     }
 }

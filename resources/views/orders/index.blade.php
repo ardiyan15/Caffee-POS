@@ -9,6 +9,7 @@
                 @foreach ($orders as $order)
                     <div class="card mb-3">
                         <div class="card-body">
+                            <h6>{{ $order->nomor_transaksi }}</h6>
                             <div class="row p-3" id="card-content">
                                 <table class="table">
                                     <tr>
@@ -18,16 +19,18 @@
                                         <th class="text-center">Sub Total</th>
                                         <th class="text-center">Gambar</th>
                                     </tr>
-                                    <tr>
-                                        <td class="text-center">{{ $loop->iteration }}</td>
-                                        <td class="text-center">{{ $order->name }}</td>
-                                        <td class="text-center">{{ $order->qty }}</td>
-                                        <td class="text-center">@currency($order->total_price)</td>
-                                        <td class="text-center">
-                                            <img width="50" height="50"
-                                                src='{{ asset("storage/products/$order->foto") }}'>
-                                        </td>
-                                    </tr>
+                                    @foreach ($order->transaction_details as $detail)
+                                        <tr>
+                                            <td class="text-center">{{ $loop->iteration }}</td>
+                                            <td class="text-center">{{ $detail->products->name }}</td>
+                                            <td class="text-center">{{ $detail->qty }}</td>
+                                            <td class="text-center">@currency($detail->total_price)</td>
+                                            <td class="text-center">
+                                                <img width="50" height="50"
+                                                    src='{{ asset('storage/products/' . $detail->products->foto) }}'>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </table>
                                 <div class="col-md-12">
                                     <hr style="width: 100%;">
@@ -40,7 +43,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h6 for="" class="font-weight-bold">Total</h6>
-                                            <p id="total_price">@currency($order->total_price)</p>
+                                            <p id="total_price">@currency($order->transaction_details_sum_total_price)</p>
                                         </div>
                                     </div>
                                 </div>
@@ -58,23 +61,32 @@
                                     <p class="text-white p-1">{{ ucwords($order->status_order) }}</p>
                                 </div>
                             @elseif($order->status_order == 'pending')
-                                <div class="bg-secondary mt-3 col-md-12 text-center rounded">
-                                    <p class="text-white p-1">Pesanan Dalam Antrian</p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="bg-secondary mt-3 col-md-12 text-center rounded">
+                                            <p class="text-white p-1">Pesanan Dalam Antrian</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <form action="{{ route('cancel_order', $order->id) }}" method="POST">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button
+                                                class="cancel_order btn btn-danger btn-sm mt-3 col-md-12 p-1">Batalkan</button>
+                                        </form>
+                                    </div>
                                 </div>
                             @else
                                 <div class="mt-3 col-md-12 text-center rounded">
-                                    <form action="{{ route('finish_order_customer', $order->transaction_id) }}"
-                                        method="POST">
+                                    <form action="{{ route('finish_order_customer', $order->id) }}" method="POST">
                                         @csrf
                                         @method('PATCH')
-                                        <button id="finish_order" style="width: 100%"
-                                            class="btn btn-success btn-sm rounded">Selesaikan
+                                        <button data-id={{ $order->snap_token }}
+                                            data-payment={{ $order->payment_method }} style="width: 100%"
+                                            class="finish_order_customer btn btn-success btn-sm rounded">Selesaikan
                                             Pesanan</button>
                                     </form>
                                 </div>
-                                {{-- <div class="bg-secondary mt-3 col-md-12 text-center rounded">
-                                <p class="text-white p-1">{{ ucwords($orders[0]->status_order) }}</p>
-                            </div> --}}
                             @endif
                         </div>
                     </div>
@@ -85,12 +97,56 @@
 @endsection
 
 @push('scripts')
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}">
+    </script>
+
     <script>
-        $('#finish_order').on('click', function(event) {
+        $('.finish_order_customer').on('click', function(event) {
             event.preventDefault();
             Swal.fire({
                 title: 'Selesaikan Pesanan',
                 text: 'Pesanan sudah diterima?',
+                icon: 'question',
+                showCloseButton: true,
+                showCancelButton: true,
+                cancelButtonText: "Batal",
+                focusConfirm: false,
+            }).then((value) => {
+                if (value.isConfirmed) {
+                    let paymentMethod = $(this).data('payment')
+                    let form = $(this).closest('form')
+                    // console.log($(this).closest('form').submit())
+                    // $(this).closest("form").submit()
+                    let snapToken = $(this).data('id')
+                    if (paymentMethod == 'Dana') {
+                        snap.pay(snapToken, {
+                            onSuccess: function(result) {
+                                if (result.status_code == "200") {
+                                    console.log(result.status_code == "200")
+                                    form.submit()
+                                }
+                                console.log(result)
+                            },
+                            onPending: function(result) {
+                                console.log('pending')
+                                console.log(result)
+                            },
+                            onError: function(result) {
+                                console.log(result)
+                            }
+                        })
+                    } else {
+                        form.submit();
+                    }
+                }
+            });
+        });
+
+        $('.cancel_order').on('click', function(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Batalkan Pesanan',
+                text: 'Ingin membatalkan pesanan?',
                 icon: 'question',
                 showCloseButton: true,
                 showCancelButton: true,

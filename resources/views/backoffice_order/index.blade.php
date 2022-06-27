@@ -52,6 +52,10 @@
                                                         <span class="p-1 badge rounded text-white bg-info">
                                                             {{ $order->status_order }}
                                                         </span>
+                                                    @elseif($order->status_order == 'pesanan dibatalkan oleh customer')
+                                                        <span class="p-1 badge rounded text-white bg-danger">
+                                                            {{ $order->status_order }}
+                                                        </span>
                                                     @else
                                                         <span class="p-1 badge rounded text-white bg-success">
                                                             Selesai
@@ -141,7 +145,7 @@
                     @csrf
                     @method('PATCH')
                     <div class="modal-body">
-                        <input type="text" name="type" value="deliver">
+                        <input type="hidden" name="type" value="deliver">
                         <input type="hidden" name="transaction_id" value="" id="transaction_id_notes">
                         <div class="card">
                             <div class="card-body">

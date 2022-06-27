@@ -7,12 +7,27 @@ use Illuminate\Http\Request;
 
 class backoffice_report extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->start == null && $request->end == null) {
+            $transactions = Transaction::where('is_finish', 2)->orWhere('is_finish', 3)->orderBy('id', 'DESC')->get();
+        } else {
+            $transactions = Transaction::where([
+                ['is_finish', '=', 2],
+                ['created_at', '>=', $request->start],
+                ['created_at', '<=', $request->end]
+            ])->orWhere([
+                ['is_finish', '=', 3],
+                ['created_at', '>=', $request->start],
+                ['created_at', '<=', $request->end]
+            ])->orderBy('id', 'DESC')->get();
+        }
+
+
         $data = [
-            'menu' => '',
+            'menu' => 'Report',
             'sub_menu' => '',
-            'transactions' => Transaction::where('is_finish', 2)->orWhere('is_finish', 3)->orderBy('id', 'DESC')->get()
+            'transactions' => $transactions
         ];
         return view('backoffice_report.index')->with($data);
     }
@@ -34,7 +49,7 @@ class backoffice_report extends Controller
         }])->withSum('transaction_details', 'total_price')->findOrFail($id);
 
         $data = [
-            'menu' => '',
+            'menu' => 'Report',
             'sub_menu' => '',
             'transaction' => $transaction
         ];

@@ -3,8 +3,8 @@
 @section('content')
     <div class="container d-flex justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
+            <div class="card" id="card">
+                <div class="card-body" id="cardItem">
                     <div class="row" id="card-content">
                     </div>
                     <div class="mt-3 col-md-12 text-center">
@@ -70,7 +70,8 @@
 
 @push('scripts')
     <script>
-        let dataStored = JSON.parse(localStorage.getItem('order'))
+        dataStored = JSON.parse(localStorage.getItem('order'))
+        let groupAndSumData = ''
 
         function sumObj(objArr) {
             // an object to store the `created` and `amount` as key=>value
@@ -99,7 +100,12 @@
             return arr;
         }
 
-        let groupAndSumData = sumObj(dataStored)
+        if (dataStored != null) {
+            groupAndSumData = sumObj(dataStored)
+        } else {
+            $("#cardItem").hide()
+            $("#card").html("<h3 class='text-center p-3'>Tidak Ada Item</h3>")
+        }
 
         let dataIds = []
         if (dataStored == null) {

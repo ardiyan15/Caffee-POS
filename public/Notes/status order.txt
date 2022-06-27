@@ -1,0 +1,4 @@
+STATUS
+0 => pesanan masih dalam proses (persiapan dan pengantaran ke customer)
+2 => pesanan sudah diselesaikan oleh customer
+1 => driver sudah klik button "pesanan sudah diterima"
