@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Products;
 use App\Models\Transaction;
-use App\Models\Transaction_details;
 use App\Models\User;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use stdClass;
 
 class HomeController extends Controller
 {
@@ -34,7 +33,14 @@ class HomeController extends Controller
         $customers = count(User::where([['roles', '=', 'customer']])->get());
         $transactions = count(Transaction::where([['is_finish', '=', 2]])->get());
 
-        $amount_transaction = DB::select("SELECT SUM(transaction_details.total_price) AS 'total_transaction' FROM transactions JOIN transaction_details ON transaction_details.transaction_id = transactions.id WHERE DATE(transactions.created_at) = CURDATE() GROUP BY DATE(transactions.created_at)")[0];
+        $result = DB::select("SELECT SUM(transaction_details.total_price) AS 'total_transaction' FROM transactions JOIN transaction_details ON transaction_details.transaction_id = transactions.id WHERE DATE(transactions.created_at) = CURDATE() AND transactions.is_finish = 2 GROUP BY DATE(transactions.created_at)");
+
+        if ($result == null) {
+            $amount_transaction = new stdClass;
+            $amount_transaction->total_transaction = 0;
+        } else {
+            $amount_transaction = $result[0];
+        }
 
         $data = [
             'products' => $products,

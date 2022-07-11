@@ -23,8 +23,9 @@
                                     <div class="row">
                                         <div class="col-md-6 form-group">
                                             <label for="">Nama Product</label>
-                                            <input class="form-control" type="text" name="name" placeholder="Nama Product"
-                                                required value="{{ old('nama', $product->name) }}">
+                                            <input class="form-control" type="text" name="name"
+                                                placeholder="Nama Product" required
+                                                value="{{ old('nama', $product->name) }}">
                                             @error('nama')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
@@ -98,30 +99,3 @@
         </div>
     </div>
 @endsection
-
-@push('scripts')
-    <script>
-        $(".product").on('click', function(e) {
-            e.preventDefault()
-            let id = $(this).data('id')
-
-            $("#img-content").empty()
-
-            $.ajax({
-                type: 'POST',
-                url: '{{ route('get_pict_product') }}',
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    id: id
-                },
-                success: ({
-                    data
-                }) => {
-                    $("#img-content").append(
-                        `<img class="text-center" src="{!! asset('/storage/products/${data.foto}') !!}" width="450" />`)
-                },
-                error: err => console.log(err)
-            })
-        })
-    </script>
-@endpush

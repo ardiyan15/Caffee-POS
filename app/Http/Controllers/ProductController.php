@@ -136,7 +136,8 @@ class ProductController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => 'success',
-                'data' => $product
+                'data' => $product,
+                'request' => $request->id
             ]);
         } else {
             return response()->json([

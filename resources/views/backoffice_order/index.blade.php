@@ -18,75 +18,96 @@
                         <div class="card">
                             <div class="card-body">
                                 <table class="table" id="table">
-                                    <tr>
-                                        <th class="text-center">No</th>
-                                        <th class="text-center">Nomor Transaksi</th>
-                                        <th class="text-center">Pembayaran</th>
-                                        <th class="text-center">Alamat Pengantaran</th>
-                                        @if (Auth::user()->roles != 'driver')
-                                            <th class="text-center">Status</th>
-                                        @endif
-                                        <th class="text-center">Opsi</th>
-                                    </tr>
-                                    @foreach ($orders as $order)
+                                    <thead>
                                         <tr>
-                                            <td class="text-center">{{ $loop->iteration }}</td>
-                                            <td class="text-center">
-                                                <a href="{{ route('backoffice_order.show', $order->id) }}">
-                                                    {{ $order->nomor_transaksi }}
-                                                </a>
-                                            </td>
-                                            <td class="text-center">{{ $order->payment_method }}</td>
-                                            <td class="text-center">{{ $order->alamat }}</td>
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">Nomor Transaksi</th>
+                                            <th class="text-center">Nama Customer</th>
+                                            <th class="text-center">Pembayaran</th>
+                                            <th class="text-center">Alamat Pengantaran</th>
                                             @if (Auth::user()->roles != 'driver')
+                                                <th class="text-center">Status</th>
+                                            @endif
+                                            <th class="text-center">Opsi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($orders as $order)
+                                            <tr>
+                                                <td class="text-center">{{ $loop->iteration }}</td>
+                                                <td class="text-center">
+                                                    <a href="{{ route('backoffice_order.show', $order->id) }}">
+                                                        {{ $order->nomor_transaksi }}
+                                                    </a>
+                                                </td>
+                                                <td class="text-center">{{ $order->customer->username }}</td>
+                                                <td class="text-center">{{ $order->payment_method }}</td>
+                                                <td class="text-center">{{ $order->alamat }}</td>
+                                                @if (Auth::user()->roles != 'driver')
+                                                    <td class="text-center">
+                                                        @if ($order->status_order == 'pending')
+                                                            <span class="p-1 badge rounded text-white bg-warning">
+                                                                {{ $order->status_order }}
+                                                            </span>
+                                                        @elseif($order->status_order == 'pesanan disiapkan')
+                                                            <span class="p-1 badge rounded text-white bg-info">
+                                                                {{ $order->status_order }}
+                                                            </span>
+                                                        @elseif($order->status_order == 'pesanan sedang diantar')
+                                                            <span class="p-1 badge rounded text-white bg-info">
+                                                                {{ $order->status_order }}
+                                                            </span>
+                                                        @elseif($order->status_order == 'pesanan dibatalkan oleh customer')
+                                                            <span class="p-1 badge rounded text-white bg-danger">
+                                                                {{ $order->status_order }}
+                                                            </span>
+                                                        @elseif($order->status_order == 'Pesanan di reject oleh pegawai')
+                                                            <span class="p-1 badge rounded text-white bg-danger">
+                                                                {{ $order->status_order }}
+                                                            </span>
+                                                        @else
+                                                            <span class="p-1 badge rounded text-white bg-success">
+                                                                Selesai
+                                                            </span>
+                                                        @endif
+                                                    </td>
+                                                @endif
                                                 <td class="text-center">
                                                     @if ($order->status_order == 'pending')
-                                                        <span class="p-1 badge rounded text-white bg-warning">
-                                                            {{ $order->status_order }}
-                                                        </span>
+                                                        <div class="row">
+                                                            <button id="detail" data-id="{{ $order->id }}"
+                                                                data-toggle="modal" data-target="#exampleModal"
+                                                                class="rounded taking-order btn btn-primary btn-sm mr-1"><i
+                                                                    class="fas fa-edit"></i></button>
+                                                            <form
+                                                                action="{{ route('backoffice.reject-order', $order->id) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                <button class="reject-order btn btn-danger btn-sm"><i
+                                                                        class="fas fa-trash-alt"></i></button>
+                                                            </form>
+                                                        </div>
                                                     @elseif($order->status_order == 'pesanan disiapkan')
-                                                        <span class="p-1 badge rounded text-white bg-info">
-                                                            {{ $order->status_order }}
-                                                        </span>
-                                                    @elseif($order->status_order == 'pesanan sedang diantar')
-                                                        <span class="p-1 badge rounded text-white bg-info">
-                                                            {{ $order->status_order }}
-                                                        </span>
-                                                    @elseif($order->status_order == 'pesanan dibatalkan oleh customer')
-                                                        <span class="p-1 badge rounded text-white bg-danger">
-                                                            {{ $order->status_order }}
-                                                        </span>
-                                                    @else
-                                                        <span class="p-1 badge rounded text-white bg-success">
-                                                            Selesai
-                                                        </span>
+                                                        <button data-id={{ $order->id }} id="delivery"
+                                                            data-toggle="modal" data-target="#driverModal"
+                                                            class="btn btn-info btn-sm rounded">Berikan ke Driver</button>
+                                                    @elseif($order->status_order == 'pesanan sedang diantar' && Auth::user()->roles == 'driver')
+                                                        <form
+                                                            action="{{ route('transaction.finish_order_driver', $order->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('PATCH')
+                                                            <button data-id={{ $order->id }}
+                                                                class="btn btn-info btn-sm rounded finish_order">Pesanan
+                                                                sudah
+                                                                diterima</button>
+                                                        </form>
                                                     @endif
                                                 </td>
-                                            @endif
-                                            <td class="text-center">
-                                                @if ($order->status_order == 'pending')
-                                                    <button id="detail" data-id="{{ $order->id }}" data-toggle="modal"
-                                                        data-target="#exampleModal"
-                                                        class="rounded taking-order btn btn-primary btn-sm">Proses
-                                                        Pesanan</button>
-                                                @elseif($order->status_order == 'pesanan disiapkan')
-                                                    <button data-id={{ $order->id }} id="delivery" data-toggle="modal"
-                                                        data-target="#driverModal"
-                                                        class="btn btn-info btn-sm rounded">Berikan ke Driver</button>
-                                                @elseif($order->status_order == 'pesanan sedang diantar' && Auth::user()->roles == 'driver')
-                                                    <form
-                                                        action="{{ route('transaction.finish_order_driver', $order->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <button data-id={{ $order->id }}
-                                                            class="btn btn-info btn-sm rounded finish_order">Pesanan sudah
-                                                            diterima</button>
-                                                    </form>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+
                                 </table>
                             </div>
                         </div>
@@ -231,5 +252,22 @@
                 }
             });
         });
+
+        $(".reject-order").on('click', function(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: "Reject pesanan",
+                text: 'Ingin reject pesanan?',
+                icon: 'question',
+                showCloseButton: true,
+                showCancelButton: true,
+                cancelButtonText: "Batal",
+                focusConfirm: false,
+            }).then(value => {
+                if (value.isConfirmed) {
+                    $(this).closest("form").submit()
+                }
+            })
+        })
     </script>
 @endpush

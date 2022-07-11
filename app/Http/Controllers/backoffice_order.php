@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class backoffice_order extends Controller
 {
@@ -12,12 +13,10 @@ class backoffice_order extends Controller
     public function index()
     {
         if (Auth::user()->roles == 'driver') {
-            $orders = Transaction::where([
-                ['is_finish', '=', 0],
-                ['status_order', '!=', 'pending']
-            ])->orderBy('id', 'DESC')->get();
+            $orders = Transaction::with('customer')
+                ->orderBy('id', 'DESC')->get();
         } else {
-            $orders = Transaction::orderBy('id', 'DESC')->get();
+            $orders = Transaction::with('customer')->orderBy('id', 'DESC')->get();
         }
 
         $data = [
@@ -86,6 +85,23 @@ class backoffice_order extends Controller
                 'status' => 500,
                 'mesasge' => 'failed to get data'
             ]);
+        }
+    }
+
+    public function reject_order($id)
+    {
+        $transaction = Transaction::findOrFail($id);
+
+        DB::beginTransaction();
+        try {
+            $transaction->is_finish = 3;
+            $transaction->status_order = 'Pesanan di reject oleh pegawai';
+            $transaction->save();
+            DB::commit();
+            return back()->with('success', 'Berhasil Reject Pesanan');
+        } catch (\Throwable $err) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal Reject Pesanan');
         }
     }
 }

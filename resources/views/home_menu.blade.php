@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="container d-flex">
-        @foreach ($products as $product)
-            <div class="row text-center" style="margin-left: 5%;">
+        <div class="row text-center" style="margin-left: 4%;">
+            @foreach ($products as $product)
                 <div class="col-md-4 mb-3">
                     <div class="card h-100 shadow" style="width: 18rem;">
                         <img class="card-img-top" src='{{ asset("storage/products/$product->foto") }}' alt="Card image cap">
@@ -18,16 +18,15 @@
                             @endif
                         </div>
                         <div class="card-footer" style="background-color: white">
-                            <button class="btn btn-primary btn-sm rounded order" data-toggle="modal"
-                                data-target="#orderModal" data-qty="{{ $product->qty }}"
+                            <button class="btn btn-primary btn-sm rounded order" data-qty="{{ $product->qty }}"
                                 data-title="{{ $product->name }}" data-id="{{ $product->id }}">Order</button>
-                            <button class="btn btn-info btn-sm rounded text-white detail" data-toggle="modal"
-                                data-target="#modalDetail" data-id="{{ $product->id }}">Detail</button>
+                            <button class="btn btn-info btn-sm rounded text-white detail"
+                                data-id="{{ $product->id }}">Detail</button>
                         </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+        </div>
     </div>
 
     <div class="modal fade" id="modalDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -35,12 +34,12 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Detail Produk</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body-detail">
                 </div>
             </div>
         </div>
@@ -81,9 +80,7 @@
 
 @push('scripts')
     <script>
-        // localStorage.clear()
         dataStored = JSON.parse(localStorage.getItem('order'))
-        console.log(dataStored)
         if (dataStored == null) {
             dataStored = []
             $("#cart_item").hide()
@@ -102,13 +99,15 @@
             let productTitle = $(this).data('title')
             let productId = $(this).data('id')
 
+            $("#orderModal").modal('show')
+
             $("#input_stock").val(stockQty)
             $("#title-order").text(productTitle)
             $("#product_id").val(productId)
 
             $("#orderButton").on('click', function() {
+                $("#orderModal").modal('show')
                 let orderQty = $("#orderQty").val()
-                console.log(orderQty)
                 if (orderQty > stockQty) {
                     Swal.fire(
                         'Gagal',
@@ -116,28 +115,10 @@
                         'error'
                     )
                 } else {
-                    // result = dataStored.some(item => {
-                    //     return item
-                    // })
-
-                    // if (result == false) {
-                    //     dataStored.push({
-                    //         'productId': productId,
-                    //         'qty': orderQty
-                    //     })
-                    // } else if (result == true) {
-
-                    //     let index = dataStored.findIndex(data => {
-                    //         console.log(data.productId == productId)
-                    //         return data.productId === productId
-                    //     })
-                    //     console.log(dataStored[index].qty)
-                    // }
                     dataStored.push({
                         'productId': productId,
                         'qty': +orderQty
                     })
-                    console.log(dataStored)
                     localStorage.setItem('order', JSON.stringify(dataStored))
                     Swal.fire(
                         'Berhasil',
@@ -150,7 +131,8 @@
 
 
         $(".detail").on('click', function() {
-            $(".modal-body").empty()
+            $(".modal-body-detail").empty()
+            $("#modalDetail").modal('show')
 
             let id = $(this).data('id')
             $.ajax({
@@ -162,7 +144,7 @@
                 },
                 success: (data) => {
                     if (data.status == 200) {
-                        $(".modal-body").append(`
+                        $(".modal-body-detail").append(`
                             <div class="col-md-12 mb-3 text-center">
                                 <div>
                                     <img style="width: 100%;" src="{!! asset('storage/products/${data.data.foto}') !!}"
@@ -179,7 +161,7 @@
                         console.log('Failed to get detail product')
                     }
                 },
-                error: err => consle.log(err)
+                error: err => console.log(err)
             })
         })
     </script>

@@ -6,6 +6,7 @@ use App\Models\Transaction;
 use App\Services\Midtrans\CreateSnapTokenService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PDF;
 
 class OrderContrller extends Controller
 {
@@ -22,12 +23,12 @@ class OrderContrller extends Controller
         ])->orderBy('id', 'DESC')->get();
 
         foreach ($results as $result) {
-            if ($result->snap_token == null) {
-                $midtrans = new CreateSnapTokenService($result);
-                $snap_token = $midtrans->getSnapToken();
-                $result->snap_token = $snap_token;
-                $result->save();
-            }
+            // if ($result->snap_token == null) {
+            $midtrans = new CreateSnapTokenService($result);
+            $snap_token = $midtrans->getSnapToken();
+            $result->snap_token = $snap_token;
+            $result->save();
+            // }
         }
 
         $data = [
@@ -65,5 +66,13 @@ class OrderContrller extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function print_struk($id)
+    {
+        $transaction = Transaction::with('transaction_details')->findOrFail($id);
+
+        $result = PDF::loadView('orders.print_struk', ['orders' => $transaction])->setPaper('A6');
+        return $result->stream();
     }
 }

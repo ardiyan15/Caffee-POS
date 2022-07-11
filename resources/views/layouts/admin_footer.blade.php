@@ -12,7 +12,7 @@
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 {{-- <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script> --}}
 <script src=" {{ asset('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
 <script>
@@ -51,7 +51,7 @@ integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="ano
     });
 
     function formatRupiah(angka, prefix) {
-        var number_string = angka.toString(),
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
             split = number_string.split(','),
             sisa = split[0].length % 3,
             rupiah = split[0].substr(0, sisa),
@@ -68,7 +68,6 @@ integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="ano
     }
 
     $('.prevent').on('keydown keyup', function(e) {
-
         let value = $(this).val().replace(/[^0-9.]/g, "");
         $(this).val(value);
     });

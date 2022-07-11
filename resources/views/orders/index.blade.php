@@ -9,7 +9,16 @@
                 @foreach ($orders as $order)
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h6>{{ $order->nomor_transaksi }}</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>{{ $order->nomor_transaksi }}</h6>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <a target="_blank" href="{{ route('order.print-struk', $order->id) }}"
+                                        class="text-right">Print
+                                        Struk</a>
+                                </div>
+                            </div>
                             <div class="row p-3" id="card-content">
                                 <table class="table">
                                     <tr>
@@ -115,23 +124,24 @@
                 if (value.isConfirmed) {
                     let paymentMethod = $(this).data('payment')
                     let form = $(this).closest('form')
-                    // console.log($(this).closest('form').submit())
-                    // $(this).closest("form").submit()
                     let snapToken = $(this).data('id')
                     if (paymentMethod == 'Dana') {
                         snap.pay(snapToken, {
                             onSuccess: function(result) {
+                                console.log(result)
                                 if (result.status_code == "200") {
                                     console.log(result.status_code == "200")
                                     form.submit()
                                 }
-                                console.log(result)
                             },
                             onPending: function(result) {
-                                console.log('pending')
                                 console.log(result)
                             },
                             onError: function(result) {
+                                console.log(result)
+                            },
+                            onClose: function(result) {
+                                console.log($(this).find(".medium"))
                                 console.log(result)
                             }
                         })
@@ -139,7 +149,7 @@
                         form.submit();
                     }
                 }
-            });
+            }).catch(err => console.log(err))
         });
 
         $('.cancel_order').on('click', function(event) {
