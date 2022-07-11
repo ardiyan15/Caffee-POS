@@ -13,8 +13,10 @@ class backoffice_order extends Controller
     public function index()
     {
         if (Auth::user()->roles == 'driver') {
-            $orders = Transaction::with('customer')
-                ->orderBy('id', 'DESC')->get();
+            $orders = Transaction::with('customer')->where([
+                ['is_finish', '=', 0],
+                ['status_order', '!=', 'pending']
+            ])->orderBy('id', 'DESC')->get();
         } else {
             $orders = Transaction::with('customer')->orderBy('id', 'DESC')->get();
         }

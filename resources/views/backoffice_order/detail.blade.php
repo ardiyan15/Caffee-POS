@@ -48,6 +48,25 @@
                                                 <td width="10">:</td>
                                                 <td>@currency($transaction->transaction_details_sum_total_price)</td>
                                             </tr>
+                                            <tr>
+                                                <th width="100">Status</th>
+                                                <td width="10">:</td>
+                                                <td>
+                                                    @if ($transaction->is_finish == 2)
+                                                        <small class="p-1 badge rounded text-white bg-success">
+                                                            Selesai
+                                                        </small>
+                                                    @elseif($transaction->is_finish == 3)
+                                                        <small class="p-1 badge rounded text-white bg-danger">
+                                                            Reject
+                                                        </small>
+                                                    @else
+                                                        <small class="p-1 badge rounded text-white bg-info">
+                                                            Diproses
+                                                        </small>
+                                                    @endif
+                                                </td>
+                                            </tr>
                                         </table>
                                     </div>
                                 </div>

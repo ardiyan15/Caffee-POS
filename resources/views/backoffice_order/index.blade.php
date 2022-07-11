@@ -73,7 +73,7 @@
                                                     </td>
                                                 @endif
                                                 <td class="text-center">
-                                                    @if ($order->status_order == 'pending')
+                                                    @if ($order->status_order == 'pending' && Auth::user()->roles !== 'driver')
                                                         <div class="row">
                                                             <button id="detail" data-id="{{ $order->id }}"
                                                                 data-toggle="modal" data-target="#exampleModal"

@@ -56,6 +56,10 @@
                                                         <small class="p-1 badge rounded text-white bg-success">
                                                             Selesai
                                                         </small>
+                                                    @elseif($transaction->is_finish == 3)
+                                                        <small class="p-1 badge rounded text-white bg-danger">
+                                                            Reject
+                                                        </small>
                                                     @endif
                                                 </td>
                                             </tr>

@@ -5,7 +5,7 @@
         <div class="row text-center" style="margin-left: 4%;">
             @foreach ($products as $product)
                 <div class="col-md-4 mb-3">
-                    <div class="card h-100 shadow" style="width: 18rem;">
+                    <div class="card h-100 shadow rounded" style="width: 18rem;">
                         <img class="card-img-top" src='{{ asset("storage/products/$product->foto") }}' alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title text-bold" style="font-weight: bolder">{{ $product->name }}</h5>
