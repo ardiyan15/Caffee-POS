@@ -21,8 +21,8 @@
                                     <div class="row">
                                         <div class="col-md-6 form-group">
                                             <label for="">Nama Product</label>
-                                            <input class="form-control" type="text" name="name" placeholder="Nama Product"
-                                                required value="{{ old('nama') }}">
+                                            <input class="form-control" type="text" name="name"
+                                                placeholder="Nama Product" required value="{{ old('nama') }}">
                                             @error('nama')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
@@ -31,7 +31,7 @@
                                             <label for="">Tipe Product</label>
                                             <select name="type" id="" class="form-control" required>
                                                 <option value="">-- Pilih Tipe --</option>
-                                                <option value="makanan">Makanan</option>
+                                                <option value="minuman">Minuman</option>
                                             </select>
                                         </div>
                                         <div class="col-md-6 form-group">
@@ -46,7 +46,8 @@
                                         </div>
                                         <div class="col-md-6 form-group">
                                             <label for="">Deskripsi</label>
-                                            <textarea class="form-control" name="deskripsi" id="" cols="10" rows="3" placeholder="Deskripsi Product"></textarea>
+                                            <textarea class="form-control" name="deskripsi" id="" cols="10" rows="3"
+                                                placeholder="Deskripsi Product"></textarea>
                                         </div>
                                         <div class="col-md-6 form-group">
                                             <label for="">Foto Product</label>

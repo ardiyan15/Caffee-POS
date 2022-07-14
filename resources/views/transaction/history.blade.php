@@ -10,7 +10,16 @@
                     <div class="card mb-3">
                         <div class="card-body">
                             <div class="row p-3" id="card-content">
-                                <h5>{{ $order->nomor_transaksi }}</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6>{{ $order->nomor_transaksi }}</h6>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        <a target="_blank" href="{{ route('order.print-struk', $order->id) }}"
+                                            class="text-right">Print
+                                            Struk</a>
+                                    </div>
+                                </div>
                                 <table class="table" id="table">
                                     <tr>
                                         <th class="text-center">No</th>

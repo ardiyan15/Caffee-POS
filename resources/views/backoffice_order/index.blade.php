@@ -199,10 +199,10 @@
                 success: response => {
                     if (response.status == 200) {
                         response.data.transaction_details.forEach(item => {
-                            console.log(item.total_price)
+                            console.log(item)
                             $(dom_id).append(`
                                 <div class="col-md-6 mt-4">
-                                    <img class="card-img-top" src='{{ asset('storage/products/1654159660.jpg') }}'>
+                                    <img class="card-img-top" src='{{ asset('storage/products/${item.products.foto}') }}'>
                                 </div>
                                 <div class="col-md-6 mt-4">
                                     <h3>${item.products.name}</h3>

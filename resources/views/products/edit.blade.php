@@ -34,7 +34,7 @@
                                             <label for="">Tipe Product</label>
                                             <select name="type" id="" class="form-control" required>
                                                 <option value="">-- Pilih Tipe --</option>
-                                                <option value="makanan" selected>Makanan</option>
+                                                <option value="minuman" selected>Minuman</option>
                                             </select>
                                         </div>
                                         <div class="col-md-6 form-group">

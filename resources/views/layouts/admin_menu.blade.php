@@ -2,7 +2,7 @@
     <a href="index3.html" class="brand-link">
         {{-- <img src="{{ asset('dist/img/mandiri-logo-transparent.png') }}" class="center" alt="AdminLTE Logo"
             style="width: 150px; margin-left: 10%; opacity: .8"> --}}
-        <span class="brand-text font-weight-light">Coffee Shop POS</span>
+        <span class="brand-text font-weight-light">Coffee Shop Jalur Singgah</span>
     </a>
     <div class="sidebar">
         <nav class="mt-2">
@@ -17,34 +17,48 @@
                             </p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('backoffice_report.index') }}"
-                            class="nav-link @if ($menu == 'Report') active @endif"><i
-                                class="nav-icon fas fa-file"></i>
+                    <li class="nav-item @if ($menu == 'Report') menu-open @endif">
+                        <a href="#" class="@if ($menu == 'Report') active @endif nav-link">
+                            <i class="nav-icon fas fa-file"></i>
                             <p>
-                                Report
+                                Laporan
+                                <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
+                        <ul class="nav nav-treeview">
+
+                            <li class="nav-item">
+                                <a href="{{ route('backoffice_report.index') }}"
+                                    class="nav-link @if ($menu == 'Report') active @endif"><i
+                                        class="far fa-circle nav-icon"></i>
+                                    <p>
+                                        Laporan Pesanan
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 @endif
-                <li class="nav-item">
-                    <a href="{{ route('backoffice_order.index') }}"
-                        class="nav-link @if ($menu == 'Order') active @endif"><i
-                            class="nav-icon fas fa-exchange-alt"></i>
+                <li class="nav-item @if ($menu == 'Order') menu-open @endif">
+                    <a href="#" class="@if ($menu == 'Order') active @endif nav-link">
+                        <i class="nav-icon fas fa-exchange-alt"></i>
                         <p>
-                            Pesanan
+                            Transaksi
+                            <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
-                </li>
+                    <ul class="nav nav-treeview">
 
-                <li class="nav-item">
-                    <a href="{{ route('profile.index') }}"
-                        class="nav-link @if ($menu == 'profile') active @endif"><i
-                            class="nav-icon fa fa-user"></i>
-                        <p>
-                            User Profile
-                        </p>
-                    </a>
+                        <li class="nav-item">
+                            <a href="{{ route('backoffice_order.index') }}"
+                                class="nav-link @if ($menu == 'Order') active @endif"><i
+                                    class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Pesanan
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 @if (Auth::user()->roles !== 'driver')
                     <li class="nav-item @if ($menu == 'master') menu-open @endif">
@@ -74,7 +88,17 @@
                         </ul>
                     </li>
                 @endif
+                <li class="nav-item">
+                    <a href="{{ route('profile.index') }}"
+                        class="nav-link @if ($menu == 'profile') active @endif"><i
+                            class="nav-icon fa fa-user"></i>
+                        <p>
+                            User Profile
+                        </p>
+                    </a>
+                </li>
                 <hr color="white" width="200px;">
+
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <li class="nav-item">

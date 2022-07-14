@@ -21,6 +21,6 @@ class Transaction_details extends Model
 
     public function products()
     {
-        return $this->belongsTo(Products::class, 'product_id');
+        return $this->belongsTo(Products::class, 'product_id')->withTrashed();
     }
 }

@@ -131,7 +131,7 @@
                             });
                             $("#card-content").append(`
                                 <div class="col-md-6 mt-4">
-                                    <img class="card-img-top" src='{{ asset('storage/products/1654159660.jpg') }}'>
+                                    <img class="card-img-top" src='{{ asset('storage/products/${item.foto}') }}'>
                                 </div>
                                 <div class="col-md-6 mt-4">
                                     <h3>${item.name}</h3>
