@@ -34,7 +34,11 @@
                                             <label for="">Tipe Product</label>
                                             <select name="type" id="" class="form-control" required>
                                                 <option value="">-- Pilih Tipe --</option>
-                                                <option value="minuman" selected>Minuman</option>
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}"
+                                                        @if ($category->id == $product->category_id) selected @endif>
+                                                        {{ $category->nama }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         <div class="col-md-6 form-group">

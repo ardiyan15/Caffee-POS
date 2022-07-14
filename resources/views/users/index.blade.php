@@ -81,24 +81,3 @@
         </section>
     </div>
 @endsection
-
-@push('scripts')
-    <script>
-        $('.delete-confirm').on('click', function(event) {
-            event.preventDefault();
-            Swal.fire({
-                title: 'Hapus Data',
-                text: 'Ingin menghapus data?',
-                icon: 'question',
-                showCloseButton: true,
-                showCancelButton: true,
-                cancelButtonText: "Batal",
-                focusConfirm: false,
-            }).then((value) => {
-                if (value.isConfirmed) {
-                    $(this).closest("form").submit()
-                }
-            });
-        });
-    </script>
-@endpush

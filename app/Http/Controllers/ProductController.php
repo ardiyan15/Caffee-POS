@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -27,7 +27,8 @@ class ProductController extends Controller
     {
         $data = [
             'menu' => $this->menu,
-            'sub_menu' => 'produk'
+            'sub_menu' => 'produk',
+            'categories' => Category::orderBy('id', 'DESC')->get()
         ];
 
         return view('products.create')->with($data);
@@ -45,7 +46,7 @@ class ProductController extends Controller
             Products::create([
                 'name' => $request->name,
                 'harga' => $price,
-                'tipe' => $request->type,
+                'category_id' => $request->category_id,
                 'deskripsi' => $request->deskripsi,
                 'qty' => $request->qty,
                 'foto' => $foto_product
@@ -74,7 +75,8 @@ class ProductController extends Controller
         $data = [
             'menu' => $this->menu,
             'sub_menu' => 'produk',
-            'product' => $product
+            'product' => $product,
+            'categories' => Category::orderBy('id', 'DESC')->get()
         ];
 
         return view('products.edit')->with($data);

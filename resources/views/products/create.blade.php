@@ -5,7 +5,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Tambah Product</h1>
+                        <h1>Tambah Produk</h1>
                     </div>
                 </div>
             </div>
@@ -20,24 +20,26 @@
                                     @csrf
                                     <div class="row">
                                         <div class="col-md-6 form-group">
-                                            <label for="">Nama Product</label>
+                                            <label for="">Nama Produk</label>
                                             <input class="form-control" type="text" name="name"
-                                                placeholder="Nama Product" required value="{{ old('nama') }}">
+                                                placeholder="Nama Produk" required value="{{ old('nama') }}">
                                             @error('nama')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
                                         <div class="col-md-6 form-group">
-                                            <label for="">Tipe Product</label>
-                                            <select name="type" id="" class="form-control" required>
+                                            <label for="">Tipe Produk</label>
+                                            <select name="category_id" id="" class="form-control" required>
                                                 <option value="">-- Pilih Tipe --</option>
-                                                <option value="minuman">Minuman</option>
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->nama }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         <div class="col-md-6 form-group">
                                             <label for="">Harga</label>
                                             <input type="text" class="form-control rupiah" name="harga" required
-                                                placeholder="Harga Product" value="{{ old('harga') }}">
+                                                placeholder="Harga Produk" value="{{ old('harga') }}">
                                         </div>
                                         <div class="col-md-6 form-group">
                                             <label for="">Qty</label>
@@ -47,10 +49,10 @@
                                         <div class="col-md-6 form-group">
                                             <label for="">Deskripsi</label>
                                             <textarea class="form-control" name="deskripsi" id="" cols="10" rows="3"
-                                                placeholder="Deskripsi Product"></textarea>
+                                                placeholder="Deskripsi Produk"></textarea>
                                         </div>
                                         <div class="col-md-6 form-group">
-                                            <label for="">Foto Product</label>
+                                            <label for="">Foto Produk</label>
                                             <input type="file" class="form-control" name="foto">
                                         </div>
                                     </div>

@@ -42,8 +42,9 @@
         $(this).val(formatRupiah(this.value, ));
     });
 
-    function formatRupiah(angka, prefix) {
-        var number_string = angka.toString(),
+    function formatRupiah(number, prefix) {
+        let numberText = number.toString();
+        var number_string = numberText.replace(/[^,\d]/g, '').toString(),
             split = number_string.split(','),
             sisa = split[0].length % 3,
             rupiah = split[0].substr(0, sisa),

@@ -43,19 +43,21 @@
                                                     placeholder="Password">
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="">Roles</label>
-                                                <select name="roles" class="form-control">
-                                                    <option value="">-- Pilih Roles -- </option>
-                                                    @foreach ($roles as $role)
-                                                        <option value="{{ $role['value'] }}"
-                                                            @if ($role['value'] == $user->roles) selected @endif>
-                                                            {{ ucwords($role['value']) }}</option>
-                                                    @endforeach
-                                                </select>
+                                        @if (Auth::user()->roles !== 'driver')
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="">Roles</label>
+                                                    <select name="roles" class="form-control">
+                                                        <option value="">-- Pilih Roles -- </option>
+                                                        @foreach ($roles as $role)
+                                                            <option value="{{ $role['value'] }}"
+                                                                @if ($role['value'] == $user->roles) selected @endif>
+                                                                {{ ucwords($role['value']) }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="">Nomor Telepon</label>

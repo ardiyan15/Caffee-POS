@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Master Products</h1>
+                        <h1>Master Produk</h1>
                     </div>
                 </div>
             </div>
@@ -18,7 +18,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <a href="{{ route('products.create') }}"
-                                    class="btn btn-primary btn-sm rounded pull-right">Tambah Products</a>
+                                    class="btn btn-primary btn-sm rounded pull-right">Tambah Produk</a>
                             </div>
                             <div class="card-body">
                                 <table id="table" class="table table-bordered table-striped">
@@ -31,7 +31,7 @@
                                             <th class="text-center">Deskripsi</th>
                                             <th class="text-center">Foto</th>
                                             <th class="text-center">Qty</th>
-                                            <th class="text-center">Opsi</th>
+                                            <th width="100" class="text-center">Opsi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -98,23 +98,6 @@
 
 @push('scripts')
     <script>
-        $('.delete-confirm').on('click', function(event) {
-            event.preventDefault();
-            Swal.fire({
-                title: 'Hapus Data',
-                text: 'Ingin menghapus data?',
-                icon: 'question',
-                showCloseButton: true,
-                showCancelButton: true,
-                cancelButtonText: "Batal",
-                focusConfirm: false,
-            }).then((value) => {
-                if (value.isConfirmed) {
-                    $(this).closest("form").submit()
-                }
-            });
-        });
-
         $(".product").on('click', function(e) {
             e.preventDefault()
             let id = $(this).data('id')
