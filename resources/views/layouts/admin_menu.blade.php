@@ -70,7 +70,13 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-
+                            <li class="nav-item">
+                                <a href="{{ route('categories.index') }}"
+                                    class="@if ($sub_menu == 'category') active @endif nav-link ">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Kategori Produk</p>
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <a href="{{ route('products.index') }}"
                                     class="@if ($sub_menu == 'produk') active @endif nav-link ">

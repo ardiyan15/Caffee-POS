@@ -1,9 +1,9 @@
 <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2021 <a href="#
-        ">Coffee Shop POS</a>.</strong>
+    <strong>Copyright &copy; 2022 <a href="#
+        ">Coffee Shop Jalur Singgah</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
-        <b>Version</b> 3.1.0
+        <b>Version</b> 1.0.0
     </div>
 </footer>
 <aside class="control-sidebar control-sidebar-dark">
@@ -13,7 +13,6 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-{{-- <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script> --}}
 <script src=" {{ asset('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
 <script>
     $.widget.bridge('uibutton', $.ui.button)
@@ -32,13 +31,6 @@
 <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
 <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-{{-- <script>
-    var konten = document.getElementById("content");
-    CKEDITOR.replace(konten, {
-        language: 'en-gb'
-    });
-    CKEDITOR.config.allowedContent = true;
-</script> --}}
 
 <script>
     $(document).ready(function() {
@@ -70,5 +62,22 @@
     $('.prevent').on('keydown keyup', function(e) {
         let value = $(this).val().replace(/[^0-9.]/g, "");
         $(this).val(value);
+    });
+
+    $('.delete-confirm').on('click', function(event) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Hapus Data',
+            text: 'Ingin menghapus data?',
+            icon: 'question',
+            showCloseButton: true,
+            showCancelButton: true,
+            cancelButtonText: "Batal",
+            focusConfirm: false,
+        }).then((value) => {
+            if (value.isConfirmed) {
+                $(this).closest("form").submit()
+            }
+        });
     });
 </script>
