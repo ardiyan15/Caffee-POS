@@ -31,7 +31,6 @@ Route::group([
     Route::resource('/users', UserController::class);
     Route::resource('/products', ProductController::class);
     Route::resource('/categories', CategoryController::class);
-    Route::get('/print_struk/{id}', [OrderContrller::class, 'print_struk'])->name('order.print-struk');
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
     Route::post('/reject-order/{id}', [backoffice_order::class, 'reject_order'])->name('backoffice.reject-order');
     Route::post('/get_order_transaction', [backoffice_order::class, 'get_order_transaction'])->name('get_order_transaction');
@@ -43,6 +42,7 @@ Route::resource('/registrasi', RegisterAccountController::class);
 Route::resource('/order', OrderContrller::class);
 Route::resource('/checkout', CheckoutController::class);
 Route::resource('cart', CartController::class);
+Route::get('/print_struk/{id}', [OrderContrller::class, 'print_struk'])->name('order.print-struk');
 Route::post('/get_product', [ProductController::class, 'get_product'])->name('get_product');
 Route::post('/get_product_in_cart', [CartController::class, 'get_product_in_cart'])->name('cart.get_product_in_cart');
 Route::patch('/finish_order_customer/{id}', [TransactionController::class, 'finish_order_customer'])->name('finish_order_customer');

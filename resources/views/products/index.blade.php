@@ -26,12 +26,12 @@
                                         <tr>
                                             <th class="text-center">#</th>
                                             <th class="text-center">Nama</th>
-                                            <th class="text-center">Harga</th>
-                                            <th class="text-center">Tipe</th>
+                                            <th width="100" class="text-center">Harga</th>
+                                            <th width="100" class="text-center">Tipe</th>
                                             <th class="text-center">Deskripsi</th>
                                             <th class="text-center">Foto</th>
                                             <th class="text-center">Qty</th>
-                                            <th width="100" class="text-center">Opsi</th>
+                                            <th width="80" class="text-center">Opsi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -40,7 +40,7 @@
                                                 <td class="text-center">{{ $loop->iteration }}</td>
                                                 <td class="text-center">{{ $product->name }}</td>
                                                 <td class="text-center">@currency($product->harga)</td>
-                                                <td class="text-center">{{ $product->tipe }}</td>
+                                                <td class="text-center">{{ $product->category->nama }}</td>
                                                 <td class="text-center">{{ $product->deskripsi }}</td>
                                                 <td class="text-center">
                                                     <a href="" class="product" data-toggle="modal"

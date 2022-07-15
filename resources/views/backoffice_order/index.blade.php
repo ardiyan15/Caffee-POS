@@ -25,6 +25,7 @@
                                             <th class="text-center">Nama Customer</th>
                                             <th class="text-center">Pembayaran</th>
                                             <th class="text-center">Alamat Pengantaran</th>
+                                            <th class="text-center">Tanggal Transaksi</th>
                                             @if (Auth::user()->roles != 'driver')
                                                 <th class="text-center">Status</th>
                                             @endif
@@ -43,6 +44,7 @@
                                                 <td class="text-center">{{ $order->customer->username }}</td>
                                                 <td class="text-center">{{ $order->payment_method }}</td>
                                                 <td class="text-center">{{ $order->alamat }}</td>
+                                                <td class="text-center">{{ substr($order->created_at, 0, 10) }}</td>
                                                 @if (Auth::user()->roles != 'driver')
                                                     <td class="text-center">
                                                         @if ($order->status_order == 'pending')

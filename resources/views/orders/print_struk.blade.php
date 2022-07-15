@@ -27,6 +27,20 @@
 </head>
 
 <body>
+    <table style="margin-top: -70px;">
+        <tr>
+            <td width="400" align="center" colspan="2">
+                <img class="card-img-top" src='{{ asset('image/logo-transparent.png') }}' alt="Card image cap"
+                    style="width: 150px; height: 150px;">
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td align="center" colspan="2">
+                <h5>Coffee Shop Jalur Singgah</h5>
+            </td>
+        </tr>
+    </table>
     <div style="margin-left: -15px;">
         <div class="col-md-8">
             <div class="card mb-3">

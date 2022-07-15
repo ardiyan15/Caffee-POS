@@ -13,7 +13,7 @@ class ProductController extends Controller
 
     public function index()
     {
-        $products = Products::orderBy('id', 'DESC')->get();
+        $products = Products::with('category')->orderBy('id', 'DESC')->get();
         $data = [
             'menu' => $this->menu,
             'sub_menu' => 'produk',

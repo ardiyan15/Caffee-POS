@@ -7,8 +7,8 @@
                 <div class="card">
                     {{-- <div class="card-header">{{ __('Login') }}</div> --}}
                     <div class="card-header text-center">
-                        <img class="text-center card-img-top" src='{{ asset('image/logo.jpg') }}' alt="Card image cap"
-                            style="width: 50px; height: 50px;">
+                        <img class="card-img-top" src='{{ asset('image/logo-transparent.png') }}' alt="Card image cap"
+                            style="width: 200px; height: 200px;">
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('login') }}">
