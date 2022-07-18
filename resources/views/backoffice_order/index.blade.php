@@ -77,9 +77,9 @@
                                                 <td class="text-center">
                                                     @if ($order->status_order == 'pending' && Auth::user()->roles !== 'driver')
                                                         <div class="row">
-                                                            <button id="detail" data-id="{{ $order->id }}"
-                                                                data-toggle="modal" data-target="#exampleModal"
-                                                                class="rounded taking-order btn btn-primary btn-sm mr-1"><i
+                                                            <button data-id="{{ $order->id }}" data-toggle="modal"
+                                                                data-target="#exampleModal"
+                                                                class="detail rounded taking-order btn btn-primary btn-sm mr-1"><i
                                                                     class="fas fa-edit"></i></button>
                                                             <form
                                                                 action="{{ route('backoffice.reject-order', $order->id) }}"
@@ -200,6 +200,7 @@
                 },
                 success: response => {
                     if (response.status == 200) {
+                        $(dom_id).empty()
                         response.data.transaction_details.forEach(item => {
                             $(dom_id).append(`
                                 <div class="col-md-6 mt-4">
@@ -224,7 +225,7 @@
             })
         }
 
-        $("#detail").on('click', function() {
+        $(".detail").on('click', function() {
             let id = $(this).data('id');
             $("#transaction_id").val(id)
 

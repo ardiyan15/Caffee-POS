@@ -15,7 +15,8 @@ class backoffice_order extends Controller
         if (Auth::user()->roles == 'driver') {
             $orders = Transaction::with('customer')->where([
                 ['is_finish', '=', 0],
-                ['status_order', '!=', 'pending']
+                ['status_order', '!=', 'pending'],
+                ['status_order', '!=', 'pesanan disiapkan']
             ])->orderBy('id', 'DESC')->get();
         } else {
             $orders = Transaction::with('customer')->orderBy('id', 'DESC')->get();

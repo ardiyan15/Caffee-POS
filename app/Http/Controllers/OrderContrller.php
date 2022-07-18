@@ -70,7 +70,7 @@ class OrderContrller extends Controller
 
     public function print_struk($id)
     {
-        $transaction = Transaction::with('transaction_details')->findOrFail($id);
+        $transaction = Transaction::withSum('transaction_details', 'total_price')->with('transaction_details')->findOrFail($id);
 
         $result = PDF::loadView('orders.print_struk', ['orders' => $transaction])->setPaper('A6');
         return $result->stream();
