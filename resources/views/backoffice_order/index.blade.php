@@ -92,7 +92,8 @@
                                                     @elseif($order->status_order == 'pesanan disiapkan')
                                                         <button data-id={{ $order->id }} id="delivery"
                                                             data-toggle="modal" data-target="#driverModal"
-                                                            class="btn btn-info btn-sm rounded">Berikan ke Driver</button>
+                                                            class="delivery btn btn-info btn-sm rounded">Berikan ke
+                                                            Driver</button>
                                                     @elseif($order->status_order == 'pesanan sedang diantar' && Auth::user()->roles == 'driver')
                                                         <form
                                                             action="{{ route('transaction.finish_order_driver', $order->id) }}"
@@ -232,7 +233,7 @@
             call_ajax("#card-content", id)
         })
 
-        $("#delivery").on('click', function() {
+        $(".delivery").on('click', function() {
             let id_note_transaction = $(this).data('id')
             $("#transaction_id_notes").val(id_note_transaction)
             call_ajax("#card-content-notes", id_note_transaction)
